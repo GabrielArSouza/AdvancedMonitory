@@ -2,6 +2,7 @@
 #define _MONITOR_H_
 
 #include "terminal.h"
+#include "json_management.h"
 #include <string>
 #include <iostream>
 #include <sstream>    // istringstream
