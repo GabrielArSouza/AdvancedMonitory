@@ -14,27 +14,28 @@
     <div width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">
+       
         var usedMem = 300.0;
         var notUsedMem = 100.0;
         var innactMem = 20.0;
 
         var file = "/home/gabriel/Códigos/AdvancedMonitory/IO/dados.txt";
 
-        // var lineReader = require('linereader');
-        // lineReader.eachLine(file, function (line, last) {
+        var lineReader = require('linereader');
+        lineReader.eachLine(file, function (line, last) {
             
-        //     let str = line;
-        //     let arr = str.split(" | ");
+            let str = line;
+            let arr = str.split(" | ");
 
-        //     usedMem = parseFloat(arr[0]);
-        //     notUsedMem = parseFloat(arr[1]);
-        //     innactMem = parseFloat(arr[2]);
+            usedMem = parseFloat(arr[0]);
+            notUsedMem = parseFloat(arr[1]);
+            innactMem = parseFloat(arr[2]);
 
-        //     if (last) {
-        //         res.json({ message: 'Importado com sucesso!' });
-        //     }
+            if (last) {
+                res.json({ message: 'Importado com sucesso!' });
+            }
 
-        // });  
+        });  
 
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
