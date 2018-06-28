@@ -19,6 +19,10 @@ void toMonitor ()
 	double number;
 
 	std::vector<double> dados;	
+	std::vector<std::string> labels;
+	labels.push_back("total");
+	labels.push_back("livre");
+	labels.push_back("usada");
 
 
 	for ( int i=0; i < 3; i++ )
@@ -30,7 +34,11 @@ void toMonitor ()
 		dados.push_back(number/(1024*1024));
 	}
 
-	FILE *arq = fopen("/home/gabriel/Códigos/AdvancedMonitory/IO/dados.txt", "wt");
+	write_json_file(labels, dados, "data/data.json");
+
+	/*
+
+	FILE *arq = fopen("/home/josenaldo/edgard/trabs/AdvancedMonitory/IO/dados.txt", "wt");
 
 	if(arq == NULL)
 	{
@@ -49,5 +57,5 @@ void toMonitor ()
     		std::cout << "Erro na Gravacao\n";
 	}
 	
-	fclose(arq);
+	fclose(arq);*/
 }
