@@ -14,4 +14,6 @@
  */
 void toMonitor ();
 
+void data_per_process(std::string output_path);
+
 #endif

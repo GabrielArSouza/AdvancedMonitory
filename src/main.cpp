@@ -11,6 +11,7 @@ int main ()
 	while ( true )
 	{
 		toMonitor ();
+		data_per_process("data/per_process.json");
 		sleep(1);
 	}
 
