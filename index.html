@@ -8,13 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> 
 </head>
 <body>    
-    <h2>Memory Monitoring</h2>
-
-    <div width="100px" height="50" >
+    <div id = "data" width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">
-       
-        var file = "/home/gabriel/Códigos/AdvancedMonitory/IO/dados.txt";
 
         $.ajaxSetup({
            async: false
@@ -31,8 +27,7 @@
         });
 
         var usedMem = totalMem - availableMem;
-        var innactMem = (availableMem - freeMem).toFixed(2);
-
+        
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
@@ -40,23 +35,98 @@
 
             // The data for our dataset
             data: {
-                labels: ["Used", "Free", "Innactive"],
+                labels: ["Used", "Free"],
                 datasets: [{
                     label: "Memory Monitoring",
-                    backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C"],
-                    data: [usedMem, freeMem, innactMem],
+                    backgroundColor: ["#F7464A", "#46BFBD"],
+                    data: [usedMem, availableMem],
                 }]
             },
 
             // Configuration options go here
-            options: {}
+            options: {
+                title: {
+                    display: true,
+                    text: 'RAM'
+                }
+            }
         });
-
-        
 
         </script>    
     </canvas>
-    </div>
 
+    <br>
+    <br>
+
+    <div align="center">
+         <table id = "perProcess" style="width:80%">
+            <thead>
+                <tr>
+                    <th>PID</th>
+                    <th>VmPeak (KB)</th>
+                    <th>VmSize (KB)</th>
+                    <th>VmLck (KB)</th>
+                    <th>VmPin (KB)</th>
+                    <th>VmHwm (KB)</th>
+                    <th>VmRss (KB)</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                
+            </tbody>
+         </table> 
+  
+        <script type="text/javascript">
+            var dados;
+
+            $.getJSON('data/per_process.json', function(json) {
+                dados = json;
+               
+            });
+
+            dados.forEach(function (item, indice, array) {
+                
+                // Instanciar linha
+                var row = document.createElement("tr");
+
+                // Instanciar células da linha
+                var pid = document.createElement("td");
+                var vmpeak = document.createElement("td");
+                var vmsize = document.createElement("td");
+                var vmlck = document.createElement("td");
+                var vmpin = document.createElement("td");
+                var vmhwm = document.createElement("td");
+                var vmrss = document.createElement("td");
+                
+                // vincular dados às células
+                pid.appendChild(document.createTextNode(item.pid));
+                vmpeak.appendChild(document.createTextNode(item.vmpeak));
+                vmsize.appendChild(document.createTextNode(item.vmsize));
+                vmlck.appendChild(document.createTextNode(item.vmlck));
+                vmpin.appendChild(document.createTextNode(item.vmpin));
+                vmhwm.appendChild(document.createTextNode(item.vmhwm));
+                vmrss.appendChild(document.createTextNode(item.vmrss));
+
+                // Vincular células à linha
+                row.appendChild(pid);
+                row.appendChild(vmpeak);
+                row.appendChild(vmsize);
+                row.appendChild(vmlck);
+                row.appendChild(vmpin);
+                row.appendChild(vmhwm);
+                row.appendChild(vmrss);
+
+                //vincular linha a tabela
+                var tbodyTable = document.querySelector("tbody");
+                tbodyTable.appendChild(row);
+            });
+        </script>
+    </div>
+        
+  
+
+    </canvas>
+    </div>
+    
 </body>
 </html>
