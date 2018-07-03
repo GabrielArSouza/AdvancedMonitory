@@ -53,21 +53,33 @@ void data_per_process(std::string output_path)
 
 	std::vector<std::string> labels;
 	std::vector<double> values;
+	std::vector<int> pids;
+
+	while(sstream_procs >> proc_path)
+		pids.push_back(stoi(proc_path.substr(6)));
+
+	std::sort(pids.begin(), pids.end());
 
 	// iterates over all processes
-	while(sstream_procs >> proc_path)
+	for(int pid : pids)
 	{
-		std::cout << "fetching data of process: " << proc_path << std::endl;
-		std::string pid = proc_path.substr(6);
+		std::cout << "fetching data of process: " << pid << std::endl;
+
 		outfile << "{\"pid\": " << pid << ",";
 
 		// gets the status of that process
-		std::string cmd_proc_status = "cat " + proc_path + "/status";
+		std::string cmd_proc_status = "cat /proc/" + std::to_string(pid) + "/status";
 		std::string proc_status = pegar_saida_comando(cmd_proc_status.c_str());
 
 		std::istringstream sstream_proc_status(proc_status);
 		std::string word;
 
+		bool hasVmPeak = false;
+		bool hasVmSize = false;
+		bool hasVmLck = false;
+		bool hasVmPin = false;
+		bool hasVmHWM = false;
+		bool hasVmRSS= false;
 
 		while(sstream_proc_status >> word)
 		{
@@ -76,6 +88,7 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmpeak\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmPeak = true;
 			}
 
 			else if(word == "VmSize:")
@@ -83,6 +96,7 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmsize\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmSize = true;
 			}
 
 			else if(word == "VmLck:")
@@ -90,6 +104,7 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmlck\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmLck = true;
 			}
 
 			else if(word == "VmPin:")
@@ -97,6 +112,7 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmpin\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmPin = true;
 			}
 
 			else if(word == "VmHWM:")
@@ -104,6 +120,7 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmhwm\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmHWM = true;
 			}
 
 			else if(word == "VmRSS:")
@@ -111,10 +128,18 @@ void data_per_process(std::string output_path)
 				outfile << "\"vmrss\":";
 				sstream_proc_status >> word;		
 				outfile << word << ",";
+				hasVmRSS = true;
 
 				break;
 			}
 		}
+
+		if(!hasVmPeak) outfile << "\"vmpeak\": \"-\",";
+		if(!hasVmSize) outfile << "\"vmsize\": \"-\",";
+		if(!hasVmLck) outfile << "\"vmlck\": \"-\",";
+		if(!hasVmPin) outfile << "\"vmpin\": \"-\",";
+		if(!hasVmHWM) outfile << "\"vmhwm\": \"-\",";
+		if(!hasVmRSS) outfile << "\"vmrss\": \"-\",";
 
 		// replaces the last char (which is a comma) for a closing bracket
 		char last_char = '}';

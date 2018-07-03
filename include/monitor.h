@@ -3,6 +3,7 @@
 
 #include "terminal.h"
 #include "json_management.h"
+#include <algorithm> // sort
 #include <string>
 #include <iostream>
 #include <sstream>    // istringstream

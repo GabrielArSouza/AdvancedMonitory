@@ -114,13 +114,7 @@
 
 
             var i;
-            // for (i =1; i < dados.length; i++)
-            // {
-            //     console.log(i);
-            //     console.log(dados.length);
-            //     document.getElementById('perProcess').deleteRow(i); 
-            // }
-            
+
             $("#perProcess tbody tr").remove();
 
              $.getJSON('data/per_process.json', function(json) {
@@ -165,7 +159,7 @@
                 tbodyTable.appendChild(row);
             }); 
              
-        }, 5000);
+        }, 200);
         </script>
     </div>
 
