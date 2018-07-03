@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> 
 
     <style type="text/css">
-    <!--
         body {
             padding:0px;
             margin:0px;
@@ -41,18 +40,17 @@
             color: #6D6D6D;
             border-bottom:3px solid #EA0000;
         }
-    -->
     </style>
 </head>
 <body>    
 
-<!-- <div id="menu">
+ <div id="menu">
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="PerProcess.html">Advanced Monitory</a></li>
     </ul>
 </div>
- -->
+ 
     <div id = "data" width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">     
@@ -74,7 +72,7 @@
         var usedMem = (totalMem - availableMem).toFixed(2);
         
         var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
+        var memChart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'doughnut',
             animation: {
@@ -101,18 +99,18 @@
             }
         });
 
-        function addData(chart, used, available) {
-            chart.data.datasets[0].data.push(used)
-            chart.data.datasets[0].data.push(available)
+        function addData(mChart, used, available) {
+            mChart.data.datasets[0].data.push(used)
+            mChart.data.datasets[0].data.push(available)
         }
 
-        function removeData(chart) {
-            chart.data.datasets[0].data.pop()
-            chart.data.datasets[0].data.pop()
+        function removeData(mChart) {
+            mChart.data.datasets[0].data.pop()
+            mChart.data.datasets[0].data.pop()
         }
 
         var loop = setInterval(function (){
-            $.getJSON('data/data.json', function(json) {
+            $.getJSON('data/general_memory_data.json', function(json) {
                 totalMem = json.total.toFixed(2);
                 freeMem = json.livre.toFixed(2);
                 availableMem = json.usada.toFixed(2);    
@@ -120,17 +118,17 @@
 
             var usedMem = totalMem - availableMem
 
-            // console.log("used mem: " + usedMem)
-            // console.log("availanle mem:" + availableMem)
+             console.log("used mem: " + usedMem)
+             console.log("availanle mem:" + availableMem)
             
-            removeData(chart)
-            addData(chart, usedMem.toFixed(2), availableMem)
-            chart.update()
+            removeData(memChart)
+            addData(memChart, usedMem.toFixed(2), availableMem)
+            memChart.update()
         }, 1000);
 
         </script>    
     </canvas>    
-<!--
+
     <canvas  id="diskChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">
         $.ajaxSetup({
@@ -170,14 +168,14 @@
             }
         });
 
-        function addDataDisk(chart, usedDisk, freeDisk) {
-            chart.data.datasets[0].data.push(usedDisk)
-            chart.data.datasets[0].data.push(freeDisk)
+        function addDataDisk(mChart, usedDisk, freeDisk) {
+            mChart.data.datasets[0].data.push(usedDisk)
+            mChart.data.datasets[0].data.push(freeDisk)
         }
 
-        function removeDataDisk(chart) {
-            chart.data.datasets[0].data.pop()
-            chart.data.datasets[0].data.pop()
+        function removeDataDisk(mChart) {
+            mChart.data.datasets[0].data.pop()
+            mChart.data.datasets[0].data.pop()
         }
 
         var loopDisk = setInterval(function (){
@@ -189,13 +187,13 @@
             // console.log("used mem: " + usedMem)
             // console.log("availanle mem:" + availableMem)
             
-            removeData(chart)
-            addData(chart, usedDisk, freeDisk)
+            removeDataDisk(chart)
+            addDataDisk(chart, usedDisk, freeDisk)
             chart.update()
         }, 1000);
 
         </script>
     </canvas>
--->    
+    
 </body>
 </html>
