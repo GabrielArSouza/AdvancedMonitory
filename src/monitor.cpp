@@ -2,7 +2,7 @@
 
 void general_disk_usage()
 {
-	std::ifstream if_mtx_file("data/mutex_disk.json");
+	/*std::ifstream if_mtx_file("data/mutex_disk.json");
 	std::string mtx_str;
 
 	if(!if_mtx_file.is_open())
@@ -24,7 +24,7 @@ void general_disk_usage()
 	std::ofstream of_mtx_file("data/mutex_disk.json");
 	of_mtx_file << mtx_str.substr(0, 5) << 1 << mtx_str.substr(6);
 	of_mtx_file.close();
-
+*/
 	std::cout << "retrieving general disk usage...\n";
 	std::string script = "df\n";
 	std::string result = pegar_saida_comando(script.c_str());
@@ -65,11 +65,11 @@ void general_disk_usage()
 	write_json_file(labels, data, "data/general_disk_data.json");
 
 	std::cout << "done.\n";
-
+/*
 	//frees the lock
 	of_mtx_file.open("data/mutex_disk.json");
 	of_mtx_file << mtx_str.substr(0, 5) << 0 << mtx_str.substr(6);
-	of_mtx_file.close();
+	of_mtx_file.close();*/
 }
 
 /**
@@ -77,7 +77,7 @@ void general_disk_usage()
  */
 void general_memory_usage()
 {
-	std::ifstream if_mtx_file("data/mutex_memory.json");
+/*	std::ifstream if_mtx_file("data/mutex_memory.json");
 	std::string mtx_str;
 
 	if(!if_mtx_file.is_open())
@@ -98,7 +98,7 @@ void general_memory_usage()
 	// gets the lock
 	std::ofstream of_mtx_file("data/mutex_memory.json");
 	of_mtx_file << mtx_str.substr(0, 5) << 1 << mtx_str.substr(6);
-	of_mtx_file.close();
+	of_mtx_file.close();*/
 
 	std::cout << "retrieving general memory usage...\n";
 	std::string script = "cat /proc/meminfo\n";
@@ -131,10 +131,10 @@ void general_memory_usage()
 
 	write_json_file(labels, dados, "data/general_memory_data.json");
 
-	//frees the lock
+	/*//frees the lock
 	of_mtx_file.open("data/mutex_memory.json");
 	of_mtx_file << mtx_str.substr(0, 11) << 0 << mtx_str.substr(11);
-	of_mtx_file.close();
+	of_mtx_file.close();*/
 
 	std::cout << "done.\n";
 }
