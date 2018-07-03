@@ -10,8 +10,8 @@
 <body>    
     <div id = "data" width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
-        <script type="text/javascript">
-
+        <script type="text/javascript">     
+        //var loop = setInterval(function(){
         $.ajaxSetup({
            async: false
         });
@@ -26,12 +26,15 @@
             availableMem = json.usada.toFixed(2);    
         });
 
-        var usedMem = totalMem - availableMem;
+        var usedMem = (totalMem - availableMem).toFixed(2);
         
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
-            type: 'doughnut',
+            type: 'pie',
+            animation: {
+                duration: 100
+            },
 
             // The data for our dataset
             data: {
@@ -51,7 +54,7 @@
                 }
             }
         });
-
+        // }, 1000);
         </script>    
     </canvas>
 
@@ -99,7 +102,7 @@
                 var vmrss = document.createElement("td");
                 
                 // vincular dados às células
-                pid.appendChild(document.createTextNode(item.pid));
+                pid.appendChild(document.createTextNode( item.pid ));
                 vmpeak.appendChild(document.createTextNode(item.vmpeak));
                 vmsize.appendChild(document.createTextNode(item.vmsize));
                 vmlck.appendChild(document.createTextNode(item.vmlck));
@@ -122,8 +125,6 @@
             });
         </script>
     </div>
-        
-  
 
     </canvas>
     </div>
