@@ -48,9 +48,37 @@
                 title: {
                     display: true,
                     text: 'RAM'
-                }
+                },
+                animation:false
             }
         });
+
+        function addData(chart, used, available) {
+            chart.data.datasets[0].data.push(used)
+            chart.data.datasets[0].data.push(available)
+        }
+
+        function removeData(chart) {
+            chart.data.datasets[0].data.pop()
+            chart.data.datasets[0].data.pop()
+        }
+
+        var loop = setInterval(function (){
+            $.getJSON('data/data.json', function(json) {
+                totalMem = json.total.toFixed(2);
+                freeMem = json.livre.toFixed(2);
+                availableMem = json.usada.toFixed(2);    
+            });
+
+            var usedMem = totalMem - availableMem
+
+            console.log("used mem: " + usedMem)
+            console.log("availanle mem:" + availableMem)
+            
+            removeData(chart)
+            addData(chart, usedMem.toFixed(2), availableMem)
+            chart.update()
+        }, 1000);
 
         </script>    
     </canvas>
