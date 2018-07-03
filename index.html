@@ -22,6 +22,7 @@
             background-color:#EDEDED;
             list-style:none;
             font:80% Tahoma;
+            font-size: 12pt;
         }
  
         #menu ul li { display: inline; }
@@ -31,7 +32,7 @@
             color: #333;
             text-decoration: none;
             border-bottom:3px solid #EDEDED;
-            padding: 2px 10px;
+            padding: 20px 15px;
             float:left;
         }
  
@@ -45,13 +46,13 @@
 </head>
 <body>    
 
-<div id="menu">
+<!-- <div id="menu">
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="PerProcess.html">Advanced Monitory</a></li>
     </ul>
 </div>
-
+ -->
     <div id = "data" width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">     
@@ -129,6 +130,72 @@
 
         </script>    
     </canvas>    
-    
+<!--
+    <canvas  id="diskChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
+        <script type="text/javascript">
+        $.ajaxSetup({
+            async: false
+        });
+
+        var freeDisk;
+        var usedDisk;
+
+        $.getJSON('data/general_disk_data.json', function(json) {
+            freeDisk = json.livre;
+            usedDisk = json.usada; 
+        });
+
+        var disk = document.getElementById('diskChart').getContext('2d');
+        var chart = new Chart(disk, {
+            // The type of chart we want to create
+            type: 'doughnut',
+            
+            // The data for our dataset
+            data: {
+                labels: ["Used", "Free"],
+                datasets: [{
+                    label: "Disk Monitoring",
+                    backgroundColor: ["#F7464A", "#46BFBD"],
+                    data: [usedDisk, freeDisk],
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                title: {
+                    display: true,
+                    text: 'HD'
+                },
+                animation:false
+            }
+        });
+
+        function addDataDisk(chart, usedDisk, freeDisk) {
+            chart.data.datasets[0].data.push(usedDisk)
+            chart.data.datasets[0].data.push(freeDisk)
+        }
+
+        function removeDataDisk(chart) {
+            chart.data.datasets[0].data.pop()
+            chart.data.datasets[0].data.pop()
+        }
+
+        var loopDisk = setInterval(function (){
+            $.getJSON('data/general_disk_data.json', function(json) {
+                freeDisk = json.livre;
+                usedDisk = json.usada; 
+            });
+            
+            // console.log("used mem: " + usedMem)
+            // console.log("availanle mem:" + availableMem)
+            
+            removeData(chart)
+            addData(chart, usedDisk, freeDisk)
+            chart.update()
+        }, 1000);
+
+        </script>
+    </canvas>
+-->    
 </body>
 </html>

@@ -60,8 +60,8 @@ void general_disk_usage()
 	labels.push_back("livre");
 	labels.push_back("usada");
 	std::vector<long> data;	
-	data.push_back(total_not_used);
-	data.push_back(total_used);
+	data.push_back(total_not_used / (1024*1024));
+	data.push_back(total_used / (1024*1024));
 	write_json_file(labels, data, "data/general_disk_data.json");
 
 	std::cout << "done.\n";
