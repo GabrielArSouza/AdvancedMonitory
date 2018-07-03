@@ -2,6 +2,29 @@
 
 void general_disk_usage()
 {
+	std::ifstream if_mtx_file("data/mutex_disk.json");
+	std::string mtx_str;
+
+	if(!if_mtx_file.is_open())
+	{
+		std::cout << "couldn't read the mutex.json file!\n";
+		return;
+	}
+
+	getline(if_mtx_file, mtx_str);
+
+	if(mtx_str[5] == '1')
+	{
+		std::cout << "there's someone with the lock\n";
+		if_mtx_file.close();
+		return;
+	}
+
+	// gets the lock
+	std::ofstream of_mtx_file("data/mutex_disk.json");
+	of_mtx_file << mtx_str.substr(0, 5) << 1 << mtx_str.substr(6);
+	of_mtx_file.close();
+
 	std::cout << "retrieving general disk usage...\n";
 	std::string script = "df\n";
 	std::string result = pegar_saida_comando(script.c_str());
@@ -42,6 +65,11 @@ void general_disk_usage()
 	write_json_file(labels, data, "data/general_disk_data.json");
 
 	std::cout << "done.\n";
+
+	//frees the lock
+	of_mtx_file.open("data/mutex_disk.json");
+	of_mtx_file << mtx_str.substr(0, 5) << 0 << mtx_str.substr(6);
+	of_mtx_file.close();
 }
 
 /**
@@ -49,6 +77,29 @@ void general_disk_usage()
  */
 void general_memory_usage()
 {
+	std::ifstream if_mtx_file("data/mutex_memory.json");
+	std::string mtx_str;
+
+	if(!if_mtx_file.is_open())
+	{
+		std::cout << "couldn't read the mutex.json file!\n";
+		return;
+	}
+
+	getline(if_mtx_file, mtx_str);
+
+	if(mtx_str[11] == '1')
+	{
+		std::cout << "there's someone with the lock\n";
+		if_mtx_file.close();
+		return;
+	}
+
+	// gets the lock
+	std::ofstream of_mtx_file("data/mutex_memory.json");
+	of_mtx_file << mtx_str.substr(0, 5) << 1 << mtx_str.substr(6);
+	of_mtx_file.close();
+
 	std::cout << "retrieving general memory usage...\n";
 	std::string script = "cat /proc/meminfo\n";
 	std::string result = pegar_saida_comando(script.c_str());
@@ -79,6 +130,12 @@ void general_memory_usage()
 	}
 
 	write_json_file(labels, dados, "data/general_memory_data.json");
+
+	//frees the lock
+	of_mtx_file.open("data/mutex_memory.json");
+	of_mtx_file << mtx_str.substr(0, 11) << 0 << mtx_str.substr(11);
+	of_mtx_file.close();
+
 	std::cout << "done.\n";
 }
 
@@ -108,8 +165,6 @@ void data_per_process(std::string output_path)
 	// iterates over all processes
 	for(int pid : pids)
 	{
-		std::cout << "fetching data of process: " << pid << std::endl;
-
 		outfile << "{\"pid\": " << pid << ",";
 
 		// gets the status of that process
