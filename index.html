@@ -90,6 +90,8 @@
     <br>
 
     <div align="center">
+        <input TYPE="BUTTON" NAME="submit" value="Update" onclick="updateProcess()" >
+
          <table id = "perProcess" style="width:80%">
             <thead>
                 <tr>
@@ -110,9 +112,7 @@
         <script type="text/javascript">
         var dados = [];
 
-        var loop1 = setInterval(function (){
-
-
+        function updateProcess(){
             var i;
 
             $("#perProcess tbody tr").remove();
@@ -159,7 +159,7 @@
                 tbodyTable.appendChild(row);
             }); 
              
-        }, 200);
+        };
         </script>
     </div>
 
