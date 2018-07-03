@@ -13,8 +13,9 @@
 /**
  * @brief      monitors data from RAM
  */
-void toMonitor ();
+void general_memory_usage();
 
 void data_per_process(std::string output_path);
 
+void general_disk_usage();
 #endif
