@@ -20,7 +20,7 @@
         var freeMem;
         var availableMem;
 
-        $.getJSON('data/data.json', function(json) {
+        $.getJSON('data/general_memory_data.json', function(json) {
             totalMem = json.total.toFixed(2);
             freeMem = json.livre.toFixed(2);
             availableMem = json.usada.toFixed(2);    
