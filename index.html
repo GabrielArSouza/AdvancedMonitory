@@ -108,23 +108,25 @@
          </table> 
   
         <script type="text/javascript">
+        var dados = [];
+
         var loop1 = setInterval(function (){
 
-            var dados;
 
-            $.getJSON('data/per_process.json', function(json) {
+            var i;
+            // for (i =1; i < dados.length; i++)
+            // {
+            //     console.log(i);
+            //     console.log(dados.length);
+            //     document.getElementById('perProcess').deleteRow(i); 
+            // }
+            
+            $("#perProcess tbody tr").remove();
+
+             $.getJSON('data/per_process.json', function(json) {
                 dados = json;
                
             });
-
-            console.log(dados.length);
-            var i;
-            for (i =1; i < dados.length; i++)
-            {
-                console.log(i);
-                console.log(dados.length);
-                document.getElementById('perProcess').deleteRow(i); 
-            }
 
             dados.forEach(function (item, indice, array) {
                 
@@ -163,7 +165,7 @@
                 tbodyTable.appendChild(row);
             }); 
              
-        }, 1000);
+        }, 5000);
         </script>
     </div>
 
