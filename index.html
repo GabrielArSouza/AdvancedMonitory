@@ -11,7 +11,7 @@
     <div id = "data" width="100px" height="50" >
     <canvas id="myChart" width="25" height="5" style="display: block; width: 200px; height: 100px">
         <script type="text/javascript">     
-        //var loop = setInterval(function(){
+        
         $.ajaxSetup({
            async: false
         });
@@ -31,7 +31,7 @@
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
             // The type of chart we want to create
-            type: 'pie',
+            type: 'doughnut',
             animation: {
                 duration: 100
             },
@@ -51,10 +51,38 @@
                 title: {
                     display: true,
                     text: 'RAM'
-                }
+                },
+                animation:false
             }
         });
-        // }, 1000);
+
+        function addData(chart, used, available) {
+            chart.data.datasets[0].data.push(used)
+            chart.data.datasets[0].data.push(available)
+        }
+
+        function removeData(chart) {
+            chart.data.datasets[0].data.pop()
+            chart.data.datasets[0].data.pop()
+        }
+
+        var loop = setInterval(function (){
+            $.getJSON('data/data.json', function(json) {
+                totalMem = json.total.toFixed(2);
+                freeMem = json.livre.toFixed(2);
+                availableMem = json.usada.toFixed(2);    
+            });
+
+            var usedMem = totalMem - availableMem
+
+            // console.log("used mem: " + usedMem)
+            // console.log("availanle mem:" + availableMem)
+            
+            removeData(chart)
+            addData(chart, usedMem.toFixed(2), availableMem)
+            chart.update()
+        }, 1000);
+
         </script>    
     </canvas>
 
@@ -80,12 +108,23 @@
          </table> 
   
         <script type="text/javascript">
+        var loop1 = setInterval(function (){
+
             var dados;
 
             $.getJSON('data/per_process.json', function(json) {
                 dados = json;
                
             });
+
+            console.log(dados.length);
+            var i;
+            for (i =1; i < dados.length; i++)
+            {
+                console.log(i);
+                console.log(dados.length);
+                document.getElementById('perProcess').deleteRow(i); 
+            }
 
             dados.forEach(function (item, indice, array) {
                 
@@ -122,7 +161,9 @@
                 //vincular linha a tabela
                 var tbodyTable = document.querySelector("tbody");
                 tbodyTable.appendChild(row);
-            });
+            }); 
+             
+        }, 1000);
         </script>
     </div>
 
