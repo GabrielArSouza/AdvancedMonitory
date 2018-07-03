@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Advanced</title>
+	<meta charset="UTF-8">
+    <title>WebView</title>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> 
+</head>
+<body>
+
+<div>
+         <ul> 
+            <li> <strong>VmPeak:</strong> Pico de tamanho da Memória Virtual</li>
+            <li> <strong>VmSize:</strong> Tamanho da Memória Virtual</li> 
+            <li> <strong>VmLck:</strong> Tamanho da Memória bloqueada</li> 
+            <li> <strong>VmPin:</strong> Tamanho da memória fixada. Estas são páginas que não podem ser movidas</li> 
+            <li> <strong>VmHwn:</strong> Tamanho máximo do conjunto de residentes</li> 
+            <li> <strong>VmRss:</strong> Tamanho do conjunto de residentes. Note que o valor aqui é a soma de RssAnon, RssFile e RssShmem.</li> 
+
+
+        </ul>
+    </div>
+
+    <div align="center">
+        <input TYPE="BUTTON" NAME="submit" value="Update" onclick="updateProcess()" >
+
+         <table id = "perProcess" style="width:80%">
+            <thead>
+                <tr>
+                    <th>PID</th>
+                    <th>VmPeak (KB)</th>
+                    <th>VmSize (KB)</th>
+                    <th>VmLck (KB)</th>
+                    <th>VmPin (KB)</th>
+                    <th>VmHwm (KB)</th>
+                    <th>VmRss (KB)</th>
+                </tr>
+            </thead>
+            <tbody align="center">
+                
+            </tbody>
+         </table> 
+  
+        <script type="text/javascript">
+        var dados = [];
+
+        function updateProcess(){
+            var i;
+
+            $("#perProcess tbody tr").remove();
+
+             $.getJSON('data/per_process.json', function(json) {
+                dados = json;
+               
+            });
+
+            dados.forEach(function (item, indice, array) {
+                
+                // Instanciar linha
+                var row = document.createElement("tr");
+
+                // Instanciar células da linha
+                var pid = document.createElement("td");
+                var vmpeak = document.createElement("td");
+                var vmsize = document.createElement("td");
+                var vmlck = document.createElement("td");
+                var vmpin = document.createElement("td");
+                var vmhwm = document.createElement("td");
+                var vmrss = document.createElement("td");
+                
+                // vincular dados às células
+                pid.appendChild(document.createTextNode( item.pid ));
+                vmpeak.appendChild(document.createTextNode(item.vmpeak));
+                vmsize.appendChild(document.createTextNode(item.vmsize));
+                vmlck.appendChild(document.createTextNode(item.vmlck));
+                vmpin.appendChild(document.createTextNode(item.vmpin));
+                vmhwm.appendChild(document.createTextNode(item.vmhwm));
+                vmrss.appendChild(document.createTextNode(item.vmrss));
+
+                // Vincular células à linha
+                row.appendChild(pid);
+                row.appendChild(vmpeak);
+                row.appendChild(vmsize);
+                row.appendChild(vmlck);
+                row.appendChild(vmpin);
+                row.appendChild(vmhwm);
+                row.appendChild(vmrss);
+
+                //vincular linha a tabela
+                var tbodyTable = document.querySelector("tbody");
+                tbodyTable.appendChild(row);
+            }); 
+             
+        };
+        </script>
+    </div>
+
+    </canvas>
+    </div>
+
+</body>
+</html>
