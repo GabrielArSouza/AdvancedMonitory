@@ -1,11 +1,55 @@
 #include "monitor.h"
 
+void general_disk_usage()
+{
+	std::cout << "retrieving general disk usage...\n";
+	std::string script = "df\n";
+	std::string result = pegar_saida_comando(script.c_str());
+
+	std::istringstream sstream(result);
+	std::string line;
+	std::string trash;
+
+	// skips first line (headers)
+	getline(sstream, line);
+
+	long total_used = 0;
+	long total_not_used = 0;
+	long used;
+	long not_used;
+
+	while(getline(sstream, line))
+	{
+		std::istringstream sstream_line(line);
+
+		// Filesystem
+		sstream_line >> trash; 
+
+		// 1K-Blocks
+		sstream_line >> trash; 
+
+		sstream_line >> used >> not_used;
+		total_used += used;
+		total_not_used += not_used;
+	}
+
+	std::vector<std::string> labels;
+	labels.push_back("livre");
+	labels.push_back("usada");
+	std::vector<long> data;	
+	data.push_back(total_not_used);
+	data.push_back(total_used);
+	write_json_file(labels, data, "data/general_disk_data.json");
+
+	std::cout << "done.\n";
+}
+
 /**
  * @brief      monitors data from RAM
  */
-void toMonitor ()
+void general_memory_usage()
 {
-	std::cout << "chamou monitor\n";
+	std::cout << "retrieving general memory usage...\n";
 	std::string script = "cat /proc/meminfo\n";
 	std::string result = pegar_saida_comando(script.c_str());
 
@@ -34,7 +78,8 @@ void toMonitor ()
 		dados.push_back(number/(1024*1024));
 	}
 
-	write_json_file(labels, dados, "data/data.json");
+	write_json_file(labels, dados, "data/general_memory_data.json");
+	std::cout << "done.\n";
 }
 
 void data_per_process(std::string output_path)

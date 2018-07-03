@@ -10,7 +10,8 @@ int main ()
 	
 	while ( true )
 	{
-		toMonitor ();
+		general_memory_usage();
+		general_disk_usage();
 		data_per_process("data/per_process.json");
 		sleep(1);
 	}
