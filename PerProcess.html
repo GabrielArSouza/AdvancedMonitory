@@ -91,7 +91,9 @@
         var dados = [];
 
         function updateProcess(){
-            var i;
+            $.ajaxSetup({
+               async: false
+            });
 
             $("#perProcess tbody tr").remove();
 
